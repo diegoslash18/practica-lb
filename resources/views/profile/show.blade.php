@@ -7,6 +7,20 @@
 
     <div>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+
+            {{-- REGISTRO_OTP_OBLIGATORIO --}}
+            @if (! auth()->user()->two_factor_secret || ! auth()->user()->two_factor_confirmed_at)
+                <div class="mb-6 rounded-lg bg-blue-50 p-6 text-blue-900">
+                    <h2 class="text-xl font-bold">Verificación obligatoria</h2>
+                    <p class="mt-2">
+                        Para completar tu registro, activa Google Authenticator,
+                        escanea el código QR y confirma tu código de 6 dígitos.
+                        No podrás acceder al dashboard hasta terminar este paso.
+                    </p>
+                </div>
+
+                @livewire('profile.two-factor-authentication-form')
+            @else
             @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                 @livewire('profile.update-profile-information-form')
 
@@ -39,6 +53,7 @@
                 <div class="mt-10 sm:mt-0">
                     @livewire('profile.delete-user-form')
                 </div>
+            @endif
             @endif
         </div>
     </div>
