@@ -11,6 +11,6 @@ class RequireTwoFactorAfterRegistration implements RegisterResponse
     {
         return $request->wantsJson()
             ? new JsonResponse('', 201)
-            : redirect()->route('profile.show');
+            : redirect()->route('otp.setup');
     }
 }

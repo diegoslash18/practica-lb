@@ -1,60 +1,39 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+<x-lab-layout title="Crear cuenta">
+    <div class="mini-brand">SERVER<span>LAB</span></div>
+    <div class="eyebrow">PASO 1 DE 2 · REGISTRO</div>
+    <h2 class="form-head">Crea tu cuenta.</h2>
+    <p class="form-sub">Después de registrarte, deberás configurar Google Authenticator obligatoriamente.</p>
 
-        <x-validation-errors class="mb-4" />
-
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-
-            <div>
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
-
-                            <div class="ms-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-label>
-                </div>
-            @endif
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ms-4">
-                    {{ __('Register') }}
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
-</x-guest-layout>
+    <form method="POST" action="{{ route('register') }}">
+        @csrf
+        <div class="field">
+            <label for="name">Nombre de usuario</label>
+            <input id="name" name="name" type="text" value="{{ old('name') }}" required autofocus autocomplete="name">
+            @error('name') <p class="form-error">{{ $message }}</p> @enderror
+        </div>
+        <div class="field">
+            <label for="email">Correo electrónico</label>
+            <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="username">
+            @error('email') <p class="form-error">{{ $message }}</p> @enderror
+        </div>
+        <div class="field">
+            <label for="password">Contraseña</label>
+            <input id="password" name="password" type="password" required autocomplete="new-password">
+            @error('password') <p class="form-error">{{ $message }}</p> @enderror
+        </div>
+        <div class="field">
+            <label for="password_confirmation">Confirmar contraseña</label>
+            <input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password">
+        </div>
+        @if(Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+            <label class="check-line">
+                <input type="checkbox" name="terms" required>
+                Acepto los <a href="{{ route('terms.show') }}" target="_blank">términos</a>
+                y la <a href="{{ route('policy.show') }}" target="_blank">privacidad</a>.
+            </label>
+            @error('terms') <p class="form-error">{{ $message }}</p> @enderror
+        @endif
+        <button class="primary" type="submit">Registrarme y configurar OTP</button>
+    </form>
+    <p class="form-footer">¿Ya tienes cuenta? <a href="{{ route('login') }}">Iniciar sesión</a></p>
+</x-lab-layout>

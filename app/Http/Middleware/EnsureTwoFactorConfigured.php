@@ -18,7 +18,7 @@ class EnsureTwoFactorConfigured
             is_null($user->two_factor_confirmed_at)
         ) {
             return redirect()
-                ->route('profile.show')
+                ->route('otp.setup')
                 ->with('two_factor_required', true);
         }
 
